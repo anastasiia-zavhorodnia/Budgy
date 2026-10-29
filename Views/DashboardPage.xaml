@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Budgy.Views.DashboardPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Budgy.Controls"
+             Title="Головна" Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="12" MaximumWidthRequest="1000">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="{Binding UserName, StringFormat='Привіт, {0}! 👋'}" Style="{StaticResource PageTitle}" />
+                <Label Grid.Column="1" Text="🔔" FontSize="22" />
+            </Grid>
+
+            <!-- Особисті / Домогосподарство -->
+            <controls:SegmentedControl Segments="Особисті:Personal|Домогосподарство:Household"
+                                    SelectedKey="{Binding ModeKey}"
+                                    Command="{Binding SetModeCommand}" />
+
+            <!-- Баланс -->
+            <Border Style="{StaticResource Card}" BackgroundColor="{StaticResource IncomeSoft}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Загальний баланс" Style="{StaticResource MutedLabel}" />
+                    <Label Text="{Binding TotalBalance, StringFormat='{0:N0} ₴'}" FontSize="32" FontAttributes="Bold" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <Border Style="{StaticResource Card}" Padding="10">
+                            <VerticalStackLayout>
+                                <Label Text="Доходи" Style="{StaticResource MutedLabel}" />
+                                <Label Text="{Binding TotalIncome, StringFormat='{0:N0} ₴'}" TextColor="{StaticResource Income}" FontAttributes="Bold" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border Grid.Column="1" Style="{StaticResource Card}" Padding="10">
+                            <VerticalStackLayout>
+                                <Label Text="Витрати" Style="{StaticResource MutedLabel}" />
+                                <Label Text="{Binding TotalExpense, StringFormat='{0:N0} ₴'}" TextColor="{StaticResource Expense}" FontAttributes="Bold" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Рахунки -->
+            <Label Text="Рахунки" Style="{StaticResource SectionTitle}" />
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Accounts}"
+                                     BindableLayout.ItemTemplate="{StaticResource AccountTemplate}" />
+            </Border>
+
+            <!-- Останні транзакції -->
+            <Label Text="Останні транзакції" Style="{StaticResource SectionTitle}" />
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding RecentTransactions}"
+                                     BindableLayout.ItemTemplate="{StaticResource TransactionTemplate}" />
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

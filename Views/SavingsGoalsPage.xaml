@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Budgy.Views.SavingsGoalsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Цілі заощаджень">
+    <Grid RowDefinitions="*,Auto" Padding="16" RowSpacing="10">
+
+        <CollectionView ItemsSource="{Binding Goals}" SelectionMode="Single"
+                        SelectedItem="{Binding SelectedGoal}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="6">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="{Binding Name}" FontAttributes="Bold" />
+                                <Label Grid.Column="1" Text="{Binding Progress, StringFormat='{0:P0}'}"
+                                       TextColor="{StaticResource Primary}" FontAttributes="Bold" />
+                            </Grid>
+                            <ProgressBar Progress="{Binding Progress}" ProgressColor="{StaticResource Primary}" />
+                            <Label Style="{StaticResource MutedLabel}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding CurrentAmount, StringFormat='{0:N0}'}" />
+                                        <Span Text=" / " />
+                                        <Span Text="{Binding TargetAmount, StringFormat='{0:N0} ₴'}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="1" Text="+ Створити ціль" Command="{Binding CreateGoalCommand}" Style="{StaticResource PrimaryButton}" />
+    </Grid>
+</ContentPage>

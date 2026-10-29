@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Budgy.Views.AddTransactionPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Budgy.Controls"
+             Title="Нова транзакція">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="10" MaximumWidthRequest="600">
+
+            <!-- Витрата / Дохід (активний сегмент підсвічується) -->
+            <controls:SegmentedControl Segments="Витрата:Expense|Дохід:Income"
+                                       SelectedKey="{Binding TypeKey}"
+                                       Command="{Binding SetTypeCommand}" />
+
+            <Label Text="Сума" Style="{StaticResource MutedLabel}" />
+            <Entry Text="{Binding Amount}" Placeholder="0.00" Keyboard="Numeric" />
+
+            <Label Text="Дата" Style="{StaticResource MutedLabel}" />
+            <DatePicker Date="{Binding Date}" Format="dd.MM.yyyy" />
+
+            <Label Text="Рахунок" Style="{StaticResource MutedLabel}" />
+            <Picker Title="Оберіть рахунок" ItemsSource="{Binding Accounts}"
+                    ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedAccount}" />
+
+            <Label Text="Категорія" Style="{StaticResource MutedLabel}" />
+            <Picker Title="Оберіть категорію" ItemsSource="{Binding Categories}"
+                    ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory}" />
+
+            <Label Text="Підкатегорія" Style="{StaticResource MutedLabel}" />
+            <Picker Title="Оберіть підкатегорію" ItemsSource="{Binding Subcategories}"
+                    ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedSubcategory}" />
+
+            <Label Text="Хто витратив" Style="{StaticResource MutedLabel}" />
+            <Picker Title="Оберіть члена сім'ї" ItemsSource="{Binding Members}"
+                    ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedMember}" />
+
+            <!-- Місце покупки: вручну або швидкий вибір зі довідника українських мереж -->
+            <Label Text="Де зроблено покупку" Style="{StaticResource MutedLabel}" />
+            <Entry Text="{Binding Merchant}" Placeholder="Наприклад: Сільпо, OKKO, Нова Пошта…" />
+
+            <CollectionView ItemsSource="{Binding MerchantSuggestions}"
+                            SelectionMode="Single" SelectedItem="{Binding SelectedSuggestion}"
+                            ItemsLayout="HorizontalList" HeightRequest="52">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource Card}" StrokeShape="RoundRectangle 20"
+                                Padding="12,6" Margin="0,4,8,4" VerticalOptions="Center">
+                            <Label Text="{Binding Display}" VerticalOptions="Center" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="📋 Усі місця покупки" Command="{Binding BrowseMerchantsCommand}"
+                    Style="{StaticResource SegmentButton}" />
+
+            <Label Text="Опис (необов'язково)" Style="{StaticResource MutedLabel}" />
+            <Editor Text="{Binding Description}" Placeholder="Додайте опис..." HeightRequest="80" />
+
+            <!-- Чек і місце покупки -->
+            <Label Text="Чек і геолокація" Style="{StaticResource SectionTitle}" />
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="10">
+
+                    <Image Source="{Binding ReceiptPreview}" IsVisible="{Binding HasPhoto}"
+                           HeightRequest="200" Aspect="AspectFit" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <Button Text="📷 Зробити фото" Command="{Binding TakePhotoCommand}" Style="{StaticResource SegmentButton}" />
+                        <Button Grid.Column="1" Text="🖼 З галереї" Command="{Binding PickPhotoCommand}" Style="{StaticResource SegmentButton}" />
+                    </Grid>
+
+                    <Button Text="🗑 Прибрати фото" Command="{Binding RemovePhotoCommand}" IsVisible="{Binding HasPhoto}"
+                            BackgroundColor="{StaticResource ExpenseSoft}" TextColor="{StaticResource Expense}"
+                            CornerRadius="10" HeightRequest="40" />
+
+                    <BoxView HeightRequest="1" Color="{StaticResource Line}" />
+
+                    <Label Text="{Binding LocationText}" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <Button Text="📍 Визначити місце" Command="{Binding CaptureLocationCommand}" Style="{StaticResource SegmentButton}" />
+                        <Button Grid.Column="1" Text="✖ Очистити" Command="{Binding ClearLocationCommand}"
+                                IsVisible="{Binding HasLocation}" Style="{StaticResource SegmentButton}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Зберегти" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}" Margin="0,8,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

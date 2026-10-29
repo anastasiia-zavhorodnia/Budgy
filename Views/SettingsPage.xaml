@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Budgy.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Налаштування">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="12" MaximumWidthRequest="700">
+
+            <Border Style="{StaticResource Card}">
+                <Grid ColumnDefinitions="56,*" ColumnSpacing="12">
+                    <Border WidthRequest="52" HeightRequest="52" StrokeShape="RoundRectangle 26"
+                            Stroke="Transparent" BackgroundColor="{StaticResource PrimarySoft}">
+                        <Label Text="👤" FontSize="24" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                        <Label Text="{Binding UserName}" FontAttributes="Bold" FontSize="16" />
+                        <Label Text="{Binding Email}" Style="{StaticResource MutedLabel}" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- SettingsItem: Title, Value, Command -->
+            <Border Style="{StaticResource Card}" Padding="4">
+                <CollectionView ItemsSource="{Binding Items}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,Auto,24" Padding="12,14">
+                                <Label Text="{Binding Title}" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="{Binding Value}" Style="{StaticResource MutedLabel}" VerticalOptions="Center" />
+                                <Label Grid.Column="2" Text="›" FontSize="20" TextColor="{StaticResource Muted}" HorizontalOptions="End" />
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Command}" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+
+            <Button Text="Вийти" Command="{Binding LogoutCommand}"
+                    BackgroundColor="{StaticResource ExpenseSoft}" TextColor="{StaticResource Expense}"
+                    CornerRadius="12" HeightRequest="48" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

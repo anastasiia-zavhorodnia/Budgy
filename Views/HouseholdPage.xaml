@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Budgy.Views.HouseholdPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Домогосподарство">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="16" RowSpacing="10">
+
+        <Border Style="{StaticResource Card}" BackgroundColor="{StaticResource PrimarySoft}">
+            <HorizontalStackLayout Spacing="12">
+                <Label Text="🏠" FontSize="28" VerticalOptions="Center" />
+                <VerticalStackLayout>
+                    <Label Text="{Binding Household.Name}" FontAttributes="Bold" FontSize="18" />
+                    <Label Text="{Binding Members.Count, StringFormat='{0} члени'}" Style="{StaticResource MutedLabel}" />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Label Grid.Row="1" Text="Члени родини" Style="{StaticResource SectionTitle}" />
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Members}"
+                        SelectionMode="Single" SelectedItem="{Binding SelectedMember}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource Card}" Padding="12">
+                        <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="12">
+                            <Border WidthRequest="40" HeightRequest="40" StrokeShape="RoundRectangle 20"
+                                    Stroke="Transparent" BackgroundColor="{StaticResource PrimarySoft}">
+                                <Label Text="👤" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Label Text="{Binding Name}" FontAttributes="Bold" />
+                                <Label Text="{Binding Role, Converter={StaticResource EnumText}}" Style="{StaticResource MutedLabel}" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="›" FontSize="24" TextColor="{StaticResource Muted}" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="3" Text="+ Додати члена" Command="{Binding AddMemberCommand}" Style="{StaticResource PrimaryButton}" />
+    </Grid>
+</ContentPage>

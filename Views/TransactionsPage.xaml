@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Budgy.Views.TransactionsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Budgy.Controls"
+             Title="Транзакції">
+    <Grid>
+        <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="16" RowSpacing="10">
+            <!-- Усі / Доходи / Витрати -->
+            <controls:SegmentedControl Segments="Усі:All|Доходи:Income|Витрати:Expense"
+                                    SelectedKey="{Binding TypeKey}"
+                                    Command="{Binding FilterCommand}" />
+
+            <!-- Фільтри: дата / категорія / рахунок -->
+            <SearchBar Grid.Row="1" Placeholder="Пошук" Text="{Binding SearchText}" />
+
+            <Grid Grid.Row="2" ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                <DatePicker Date="{Binding FilterDate}" />
+                <Picker Grid.Column="1" Title="Категорія" ItemsSource="{Binding Categories}"
+                        ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding FilterCategory}" />
+                <Picker Grid.Column="2" Title="Рахунок" ItemsSource="{Binding Accounts}"
+                        ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding FilterAccount}" />
+            </Grid>
+
+            <!-- Групи за датою: "Сьогодні", "Вчора" ... (група має властивості Name та колекцію елементів) -->
+            <CollectionView Grid.Row="3" ItemsSource="{Binding GroupedTransactions}" IsGrouped="True"
+                            SelectionMode="Single" SelectedItem="{Binding SelectedTransaction}"
+                            ItemTemplate="{StaticResource TransactionTemplate}">
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Name}" Style="{StaticResource SectionTitle}" />
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+            </CollectionView>
+        </Grid>
+
+        <Button Style="{StaticResource FabButton}" Command="{Binding AddTransactionCommand}" />
+    </Grid>
+</ContentPage>

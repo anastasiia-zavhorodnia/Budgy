@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Budgy.Views.AccountsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Рахунки">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+ Додати рахунок" Command="{Binding AddAccountCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="12">
+        <Border Style="{StaticResource Card}" BackgroundColor="{StaticResource IncomeSoft}">
+            <VerticalStackLayout>
+                <Label Text="Загальний баланс" Style="{StaticResource MutedLabel}" />
+                <Label Text="{Binding TotalBalance, StringFormat='{0:N0} ₴'}" FontSize="28" FontAttributes="Bold" />
+            </VerticalStackLayout>
+        </Border>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Accounts}"
+                        SelectionMode="Single" SelectedItem="{Binding SelectedAccount}"
+                        SelectionChangedCommand="{Binding OpenAccountCommand}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource Card}" Padding="10,2">
+                        <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="12" Padding="0,8">
+                            <Border WidthRequest="40" HeightRequest="40" StrokeShape="RoundRectangle 10"
+                                    Stroke="Transparent" BackgroundColor="{StaticResource PrimarySoft}">
+                                <Label Text="🏦" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Label Text="{Binding Name}" FontAttributes="Bold" />
+                                <Label Style="{StaticResource MutedLabel}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding AccountType, Converter={StaticResource EnumText}}" />
+                                            <Span Text=" · " />
+                                            <Span Text="{Binding Currency}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="{Binding Balance, StringFormat='{0:N0}'}"
+                                   FontAttributes="Bold" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

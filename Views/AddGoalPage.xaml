@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Budgy.Views.AddGoalPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Нова ціль">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="10" MaximumWidthRequest="600">
+            <Label Text="Назва" Style="{StaticResource MutedLabel}" />
+            <Entry Text="{Binding Name}" Placeholder="Наприклад: На автомобіль" />
+
+            <Label Text="Цільова сума" Style="{StaticResource MutedLabel}" />
+            <Entry Text="{Binding TargetAmount}" Placeholder="0.00" Keyboard="Numeric" />
+
+            <Label Text="Дедлайн" Style="{StaticResource MutedLabel}" />
+            <DatePicker Date="{Binding Deadline}" Format="dd.MM.yyyy" />
+
+            <Label Text="Опис (необов'язково)" Style="{StaticResource MutedLabel}" />
+            <Editor Text="{Binding Description}" Placeholder="Додайте опис..." HeightRequest="80" />
+
+            <Button Text="Створити" Command="{Binding CreateCommand}" Style="{StaticResource PrimaryButton}" Margin="0,8,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="Budgy.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:Budgy.Views"
+       FlyoutBehavior="{OnIdiom Phone=Disabled, Default=Locked}"
+       FlyoutBackgroundColor="{StaticResource Navy}"
+       Title="Budgy">
+
+    <!-- Оригінальний шаблон від Клода, який робить текст меню білим під Windows -->
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="16,12">
+                <Label Text="{Binding Title}" TextColor="#E5E7EB" FontSize="15" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <!-- Телефон: нижня навігація. Десктоп/планшет: бокове меню. -->
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+    <ShellContent Title="{OnPlatform Android=Головна, iOS=Головна, Default='🏠 Головна'}"
+                  Icon="{OnPlatform Android=tab_home.png, iOS=tab_home.png}"
+                  Route="Dashboard" ContentTemplate="{DataTemplate views:DashboardPage}" />
+
+    <ShellContent Title="{OnPlatform Android=Рахунки, iOS=Рахунки, Default='💳 Рахунки'}"
+                  Icon="{OnPlatform Android=tab_accounts.png, iOS=tab_accounts.png}"
+                  Route="Accounts" ContentTemplate="{DataTemplate views:AccountsPage}" />
+
+    <ShellContent Title="{OnPlatform Android=Транзакції, iOS=Транзакції, Default='🧾 Транзакції'}"
+                  Icon="{OnPlatform Android=tab_transactions.png, iOS=tab_transactions.png}"
+                  Route="Transactions" ContentTemplate="{DataTemplate views:TransactionsPage}" />
+
+    <ShellContent Title="{OnPlatform Android=Цілі, iOS=Цілі, Default='🎯 Цілі'}"
+                  Icon="{OnPlatform Android=tab_goals.png, iOS=tab_goals.png}"
+                  Route="Goals" ContentTemplate="{DataTemplate views:SavingsGoalsPage}" />
+
+    <ShellContent Title="{OnPlatform Android=Аналітика, iOS=Аналітика, Default='📊 Аналітика'}"
+                  Icon="{OnPlatform Android=tab_analytics.png, iOS=tab_analytics.png}"
+                  Route="Analytics" ContentTemplate="{DataTemplate views:AnalyticsPage}" />
+
+    <ShellContent Title="{OnPlatform Android=Сім’я, iOS=Сім’я, Default='👪 Сім’я'}"
+                  Icon="{OnPlatform Android=tab_family.png, iOS=tab_family.png}"
+                  Route="Household" ContentTemplate="{DataTemplate views:HouseholdPage}" />
+
+    <ShellContent Title="{OnPlatform Android=Категорії, iOS=Категорії, Default='🏷 Категорії'}"
+                  Icon="{OnPlatform Android=tab_categories.png, iOS=tab_categories.png}"
+                  Route="Categories" ContentTemplate="{DataTemplate views:CategoriesPage}" />
+
+    <ShellContent Title="{OnPlatform Android=Налаштування, iOS=Налаштування, Default='⚙ Налаштування'}"
+                  Icon="{OnPlatform Android=tab_settings.png, iOS=tab_settings.png}"
+                  Route="Settings" ContentTemplate="{DataTemplate views:SettingsPage}" />
+</FlyoutItem>
+
+
+</Shell>

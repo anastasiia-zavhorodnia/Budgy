@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Budgy.Views.AnalyticsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Budgy.Controls"
+             Title="Аналітика">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="12" MaximumWidthRequest="1000">
+
+            <!-- Тиждень / Місяць / Рік (активний період підсвічується) -->
+            <controls:SegmentedControl Segments="Тиждень:Week|Місяць:Month|Рік:Year"
+                                       SelectedKey="{Binding PeriodKey}"
+                                       Command="{Binding SetPeriodCommand}" />
+
+            <!-- Кругова діаграма витрат за категоріями -->
+            <Border Style="{StaticResource Card}">
+                <Grid HorizontalOptions="Center" WidthRequest="240" HeightRequest="240">
+                    <controls:DonutChartView Items="{Binding CategoryStats}" />
+                    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="2">
+                        <Label Text="Витрати" Style="{StaticResource MutedLabel}" HorizontalOptions="Center" />
+                        <Label Text="{Binding TotalExpense, StringFormat='{0:N0} ₴'}"
+                               FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <Label Text="{Binding CurrentPeriodTitle}" Style="{StaticResource MutedLabel}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <Label Text="Поки що немає витрат за цей період"
+                   IsVisible="{Binding IsEmpty}" Style="{StaticResource MutedLabel}" HorizontalOptions="Center" />
+
+            <!-- Легенда: кольори збігаються з секторами діаграми -->
+            <Label Text="За категоріями" Style="{StaticResource SectionTitle}" IsVisible="{Binding HasData}" />
+            <Border Style="{StaticResource Card}" IsVisible="{Binding HasData}">
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding CategoryStats}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="16,*,Auto,Auto" ColumnSpacing="10">
+                                <BoxView WidthRequest="12" HeightRequest="12" CornerRadius="6"
+                                         VerticalOptions="Center" Color="{Binding ColorHex}" />
+                                <Label Grid.Column="1" VerticalOptions="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Icon}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding Name}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Grid.Column="2" Text="{Binding Percent, StringFormat='{0:P0}'}"
+                                       FontAttributes="Bold" VerticalOptions="Center" />
+                                <Label Grid.Column="3" Text="{Binding Amount, StringFormat='{0:N0} ₴'}"
+                                       Style="{StaticResource MutedLabel}" VerticalOptions="Center" WidthRequest="90"
+                                       HorizontalTextAlignment="End" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Порівняння витрат -->
+            <Label Text="Порівняння витрат" Style="{StaticResource SectionTitle}" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding CurrentPeriodTitle}" Style="{StaticResource MutedLabel}" />
+                        <Label Text="{Binding CurrentPeriodExpense, StringFormat='{0:N0} ₴'}"
+                               FontAttributes="Bold" TextColor="{StaticResource Expense}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Card}">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding PreviousPeriodTitle}" Style="{StaticResource MutedLabel}" />
+                        <Label Text="{Binding PreviousPeriodExpense, StringFormat='{0:N0} ₴'}" FontAttributes="Bold" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource Card}" BackgroundColor="{StaticResource IncomeSoft}">
+                <Label Text="{Binding SavingsText}" TextColor="{StaticResource Income}" FontAttributes="Bold" />
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
